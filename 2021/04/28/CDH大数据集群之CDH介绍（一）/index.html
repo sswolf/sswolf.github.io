@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sswolf.cn","root":"/","images":"/images","scheme":"Pisces","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="CDH介绍什么是CDHCDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。 CDH提供以下特性： 灵活性：能够存储各种类型的数据，并使用各种不同的计算框架进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH大数据集群之CDH介绍（一）">
+<meta property="og:url" content="https://sswolf.cn/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="柒小浪">
+<meta property="og:description" content="CDH介绍什么是CDHCDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。 CDH提供以下特性： 灵活性：能够存储各种类型的数据，并使用各种不同的计算框架进行">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-28T09:14:04.000Z">
+<meta property="article:modified_time" content="2021-05-07T06:39:22.433Z">
+<meta property="article:author" content="柒小浪">
+<meta property="article:tag" content="Hadpoop">
+<meta property="article:tag" content="CDH">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://sswolf.cn/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>CDH大数据集群之CDH介绍（一） | 柒小浪</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">柒小浪</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CDH%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">CDH介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCDH"><span class="nav-number">1.1.</span> <span class="nav-text">什么是CDH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCM"><span class="nav-number">1.2.</span> <span class="nav-text">什么是CM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">CM架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%83%E8%B7%B3"><span class="nav-number">1.4.</span> <span class="nav-text">心跳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM-%E5%8A%9F%E8%83%BD"><span class="nav-number">1.5.</span> <span class="nav-text">CM 功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">配置管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.2.</span> <span class="nav-text">进程管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.3.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.4.</span> <span class="nav-text">主机管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.5.</span> <span class="nav-text">资源管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.6.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.7.</span> <span class="nav-text">安全管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.5.8.</span> <span class="nav-text">管理服务</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="柒小浪"
+      src="https://avatars.githubusercontent.com/u/15525497?v=4">
+  <p class="site-author-name" itemprop="name">柒小浪</p>
+  <div class="site-description" itemprop="description">选择比努力更重要！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sswolf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sswolf" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:578357612@qq.com" title="E-Mail → mailto:578357612@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://note.isliberty.me/" title="https:&#x2F;&#x2F;note.isliberty.me" rel="noopener" target="_blank">serenity</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/sswolf" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sswolf.cn/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/15525497?v=4">
+      <meta itemprop="name" content="柒小浪">
+      <meta itemprop="description" content="选择比努力更重要！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柒小浪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CDH大数据集群之CDH介绍（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-28 17:14:04" itemprop="dateCreated datePublished" datetime="2021-04-28T17:14:04+08:00">2021-04-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-07 14:39:22" itemprop="dateModified" datetime="2021-05-07T14:39:22+08:00">2021-05-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="CDH介绍"><a href="#CDH介绍" class="headerlink" title="CDH介绍"></a>CDH介绍</h2><h3 id="什么是CDH"><a href="#什么是CDH" class="headerlink" title="什么是CDH"></a>什么是CDH</h3><p>CDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。</p>
+<p>CDH提供以下特性：</p>
+<p><strong>灵活性</strong>：能够存储各种类型的数据，并使用各种不同的计算框架进行操作，包括批处理、交互式sql、文本搜索、机器学习和统计计算。</p>
+<span id="more"></span>
+<p><strong>集成性</strong>：能够快速集成和运行一个完整的Hadoop平台，适用于各种不同的硬件和软件。</p>
+<p><strong>安全性</strong>：处理和控制敏感数据。</p>
+<p><strong>扩展性</strong>：能够部署多种应用，并扩展和扩充它们以满足你的需求。</p>
+<p><strong>高可用性</strong>：可以放心地用于关键的商业任务。</p>
+<p><strong>兼容性</strong>：可以利用你现有的IT基础设施和资源。</p>
+<h3 id="什么是CM"><a href="#什么是CM" class="headerlink" title="什么是CM"></a>什么是CM</h3><p>CM（cloudera Manager）是一种管理CDH集群的端到端的应用。CM通过对CDH集群的各部分提供精细的可视化和控制，建立了企业级部署的标准，增强了操作人员的能力以提升性能、提升服务质量、提高合规性、降低管理成本。</p>
+<p>通过CM，技术人员可以很容易地部署和集中化操作CDH技术栈和其他可托管的服务。它使安装过程自动化，使部署时间从几个星期减少到几分钟；提供了一个集群范围、实时的主机和服务运行情况的视图；提供了一个单一的中央控制台，以对集群配置进行变更；并采用全方位的报告和诊断工具来帮助你优化性能和利用率。</p>
+<h3 id="CM架构"><a href="#CM架构" class="headerlink" title="CM架构"></a>CM架构</h3><p>CM的核心是cloudera Manager Server。Server承载了管理员控制台（Admin Console Web Server）和应用逻辑，并负责安装软件、配置、启动、停止服务，以及管理运行有服务的集群。</p>
+<p>Cloudera Manager Server与以下几个组件一同工作：</p>
+<p><strong>代理</strong>：在每个主机上安装，负责启动和停止进行、解包配置、触发安装、监控主机。</p>
+<p><strong>管理服务</strong>：由一组角色组成的服务，执行各种监视、告警、报告功能。</p>
+<p><strong>数据库</strong>：存储配置和监控信息。通常，多个逻辑数据库在一个或多个数据库服务器上运行。例如CMS和监控服务使用不同的逻辑数据库。</p>
+<p><strong>Cloudera仓库</strong>：CM提供的用于软件分发的仓库。</p>
+<p><strong>客户端</strong>：与服务器交互的借口，包括</p>
+<p>管理控制台，管理员使用该基于web的界面以管理集群和CM。</p>
+<p>API，开发者可使用API创建自定义的CM应用。</p>
+<h3 id="心跳"><a href="#心跳" class="headerlink" title="心跳"></a>心跳</h3><p>心跳是CM的主要通信机制。默认情况下，代理每15秒发送心跳给CMS。然而为了减少用户等待时间，当状态发生变化时，频率会增加。</p>
+<p>心跳的交换过程中，代理通知CMS其自身的活性。反过来，CMS使用该消息对应执行的操作进行响应。代理和CMS两者最终会达成一致，例如当 启动一个服务时，代理会尝试启动相关的进程;如果一个进程启动失败， CMS会将启动命令标记为失败。</p>
+<h3 id="CM-功能"><a href="#CM-功能" class="headerlink" title="CM 功能"></a>CM 功能</h3><p>状态管理：</p>
+<p>CMS维护了集群的各种状态。状态可分为两类：模块和运行时，两者都存储于CMS的数据库中。</p>
+<p>模块中包含集群、主机、服务、角色、配置。运行时包含进程、命令。</p>
+<h4 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h4><p>CM在多个层面定义了配置，如：</p>
+<ul>
+<li>服务层面，可定义整个服务实例层面的配置，如HDFS服务的默认副本因子。</li>
+<li>角色组层面，可定义某个角色组的配置，如DataNode的处理线程数量，可根据DataNodes的不同分组进行不同的配置。</li>
+<li>角色层面，可覆盖从角色组层面继承的配置。这种配置需要谨慎使用，因为会造成角色组中的配置分歧。如因为排错需求临时启用某个角色实例的DEBUG日志。</li>
+<li>主机层面，根据监控、软件管理、资源管理的不同有不同的配置。</li>
+<li>CM自身也有很多与管理操作相关的配置</li>
+</ul>
+<h4 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h4><ul>
+<li>非CM管理的集群使用脚本进行角色进程的启动，但在CM管理的集群中这类脚本不起作用。</li>
+<li>CM管理的集群中，只能使用CM进行角色进程的启停。CM使用开源的进程管理工具名为supervisord，其会启动进程、重定向日志、通知进程失 败、为进程设置正确的用户ID等等。CM支持自动重启一个崩溃的进程。 如果一个进程在启动后频繁崩溃，还会被打上非健康标记。</li>
+<li>停止CMS和CM代理不会使正在运行的进程被中止。</li>
+</ul>
+<h4 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h4><ul>
+<li>CM支持两种软件分发格式:packages和parcels。</li>
+<li>package是一种二进制分发格式，包含编译的代码和元数据如包 述、版本、依赖项。包管理系统评估此元数据以允许包搜索、执行升级、确保包的所有依赖关系得到满足。CM使用本地操作系统支持的包管理程序。</li>
+<li>parcel也是一种二进制分发格式，包含CM需要使用的附加元数据。其与package的区别有:可安装同一个parcel的多个版本，并激活其中一个; parcel可安装到任何路径;通过parcel安装，CM会自动下载并激活和每 个节点操作系统版本匹配的parcel包，解决某些操作系统版本不一致问 题。</li>
+</ul>
+<h4 id="主机管理"><a href="#主机管理" class="headerlink" title="主机管理"></a>主机管理</h4><ul>
+<li>CM 供了多种功能以管理Hadoop集群的主机。第一次运行CM管理员控制台时，可搜索主机并添加到集群，一旦选中了主机就可以为其分配CDH 角色。CM会在主机上自动部署作为集群托管节点的所有软件:JDK，CM 代理，CDH，Impala，Solr等等。</li>
+<li>服务部署并运行后，管理员控制台中的“Hosts”区域显示集群中托管 主机的总体状态。 供的信息包括主机上的CDH版本、主机所属的集群、 运行在主机上的角色的数量。Cloudera管理服务中的主机监控角色执行 健康检查并收集主机的统计信息，以允许你监控主机的健康和性能。</li>
+</ul>
+<h4 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h4><p>CM允许使用两种资源管理方式:</p>
+<ul>
+<li>静态资源池:使用Linux cgroups在多个服务间静态地进行资源隔离，如 HBase、Impala、YARN分别使用一定百分比的资源。静态资源池默认不启 用。</li>
+<li>动态资源池:用于某些服务内部的资源管理，如YARN的各种资源调度器; Impala也可对不同池中的查询动态分配资源。</li>
+</ul>
+<h4 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h4><ul>
+<li>访问CM通过用户账户进行控制。用户账户标识如何对用户进行身份验证，并确定授予用户的权限。</li>
+<li>CM 供了多种用户认证机制。可以配置CM使用CM数据库认证用户，或使用某种外部认证服务。外部认证服务可以是LDAP服务器，或者指定的其 他服务。CM还支持使用安全断言标记语言(SAML)来实现单点登录。</li>
+</ul>
+<h4 id="安全管理"><a href="#安全管理" class="headerlink" title="安全管理"></a>安全管理</h4><ul>
+<li>认证:认证是指用户或服务证明其有访问某种系统资源的权限。Cloudera集群支持操作系统账号认证、LDAP、Kerberos等认证方式。LDAP和Kerberos并不是互斥的，很多时候可以一起使用。</li>
+<li>授权:授权关注谁可以存取或控制指定的资源或服务。CDH目前支持以 下几种权限控制:传统的POSIX形式的目录和文件权限控制;HDFS扩展 的ACL细粒度权限控制;HBase可对用户和组设置各种操作的ACL;使用Apache Sentry进行基于角色的权限控制。</li>
+<li>加密:集群不同层面存储和传输的数据支持不同的加密方式。</li>
+</ul>
+<h4 id="管理服务"><a href="#管理服务" class="headerlink" title="管理服务"></a>管理服务</h4><p>Cloudera Management Service实现了多种管理特性，包括活动监控、主机监控、服务监控、事件服务、告警发布、报表管理等。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="柒小浪 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="柒小浪 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>柒小浪
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://sswolf.cn/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/" title="CDH大数据集群之CDH介绍（一）">https://sswolf.cn/2021/04/28/CDH大数据集群之CDH介绍（一）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Hadpoop/" rel="tag"># Hadpoop</a>
+              <a href="/tags/CDH/" rel="tag"># CDH</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/28/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4/" rel="prev" title="二进制部署Kubernetes集群">
+                  <i class="fa fa-chevron-left"></i> 二进制部署Kubernetes集群
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">渝ICP备 - 20000988号-1 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">柒小浪</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">57k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">52 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":240,"height":480},"mobile":{"show":true},"react":{"opacityDefault":1,"opacityOnHover":null},"log":false,"tagMode":false});</script></body>
+</html>
