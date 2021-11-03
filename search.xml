@@ -191,44 +191,44 @@
 
 <p>修改所属组权限 cloudera-scm</p>
 <p>如下图所示</p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510150258.png" alt="cdh20210510150258"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510150258.png" alt="cdh20210510150258"></p>
 <p><strong>启动cloudera-manager-server</strong></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl enable cloudera-scm-server &amp;&amp; systemctl start cloudera-scm-server</span><br></pre></td></tr></table></figure>
 
 <p>登入web控制台，进行服务的部署（cdh1节点的IP+7180端口，帐号密码默认都是admin）</p>
-<p><img src="https://images.sswolf.cn/cdhcdhlogin.png"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdhlogin.png"></p>
 <p><strong>继续下一步</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510143223.png" alt="cdh20210510143223"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510143223.png" alt="cdh20210510143223"></p>
 <p><strong>同意许可</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510144638.png" alt="cdh20210510144638"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510144638.png" alt="cdh20210510144638"></p>
 <p><strong>选择企业试用版</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510144742.png" alt="cdh20210510144742"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510144742.png" alt="cdh20210510144742"></p>
 <p><strong>开始进行集群的安装</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510144911.png" alt="cdh20210510144911"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510144911.png" alt="cdh20210510144911"></p>
 <p><strong>填写集群名字</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510145012.png" alt="cdh20210510145012"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510145012.png" alt="cdh20210510145012"></p>
 <p><strong>填写主机名并点击搜索按钮</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510145140.png" alt="cdh20210510145140"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510145140.png" alt="cdh20210510145140"></p>
 <p><strong>填写本地yum源地址并检查cdh版本是否和上传的文件一致</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510150835.png" alt="cdh20210510150835"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510150835.png" alt="cdh20210510150835"></p>
 <p><strong>jdk之前的步骤已安装，现在直接下一步即可</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510150959.png" alt="cdh20210510150959"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510150959.png" alt="cdh20210510150959"></p>
 <p><strong>输入统一的服务器密码</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510151120.png" alt="cdh20210510151120"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510151120.png" alt="cdh20210510151120"></p>
 <p><strong>开始安装agent</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510151335.png" alt="cdh20210510151335"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510151335.png" alt="cdh20210510151335"></p>
 <p><strong>agent安装完成</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510151416.png" alt="cdh20210510151416"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510151416.png" alt="cdh20210510151416"></p>
 <p><strong>安装Parcels</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510151520.png" alt="cdh20210510151520"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510151520.png" alt="cdh20210510151520"></p>
 <p><strong>性能检查</strong></p>
-<p><img src="https://images.sswolf.cn/cdhcdh20210510152051.png" alt="cdh20210510152051"></p>
+<p><img src="https://img.ssmwolf.com/cdhcdh20210510152051.png" alt="cdh20210510152051"></p>
 <p><strong>选择服务安装</strong></p>
-<p><img src="https://images.sswolf.cn/cdh20210510164824.png" alt="20210510164824"></p>
+<p><img src="https://img.ssmwolf.com/cdh20210510164824.png" alt="20210510164824"></p>
 <p><strong>数据库配置</strong></p>
-<p><img src="https://images.sswolf.cn/cdh20210510171218.png"></p>
+<p><img src="https://img.ssmwolf.com/cdh20210510171218.png"></p>
 <p><strong>至此，cdh集群搭建完成</strong></p>
-<p><img src="https://images.sswolf.cn/cdh20210510172811.png" alt="20210510172811"></p>
+<p><img src="https://img.ssmwolf.com/cdh20210510172811.png" alt="20210510172811"></p>
 <h1 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h1><p><a href="http://www.fblinux.com/?p=1492">1.CDH和CM介绍及搭建</a></p>
 <p><a href="https://www.cnblogs.com/alidata/p/13394358.html">2.CDH 安装与部署</a></p>
 ]]></content>
@@ -340,26 +340,26 @@
 <p>因jenkins 默认使用8080端口，和tomcat占用的端口有冲突，故更改一下jenkins的默认端口</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/</span>sysconfig/jenkins</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324133442.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324133442.png" alt="img"></p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vim <span class="regexp">/etc/i</span>nit.d/jenkins</span><br></pre></td></tr></table></figure>
 
 <p>因rpm安装的jenkins 默认的jdk与安装的jdk路径不一样，会报错，启动不起来，故需要更改一下配置</p>
-<p><img src="https://images.sswolf.cn/YSH11DRH%7DQT0I1_0%25NTKYTY.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/YSH11DRH%7DQT0I1_0%25NTKYTY.png" alt="img"></p>
 <h4 id="jenkins初始化"><a href="#jenkins初始化" class="headerlink" title="jenkins初始化"></a>jenkins初始化</h4><p>浏览器打开你的地址 ip+端口，复制密码到输入框</p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324133843.png" alt="jenkins密码"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324133843.png" alt="jenkins密码"></p>
 <h4 id="jenkins插件安装"><a href="#jenkins插件安装" class="headerlink" title="jenkins插件安装"></a>jenkins插件安装</h4><p>这里选择安装推荐的默认插件</p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324134149.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324134149.png" alt="img"></p>
 <p>创建管理员账号</p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324134636.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324134636.png" alt="img"></p>
 <p>安装 maven 插件，找到 “系统管理“ - “安装插件” ，点击 “可选插件”，找到如下maven插件的版本（Maven Integration）</p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324135304.png" alt="img"></p>
-<h5 id="jenkins配置"><a href="#jenkins配置" class="headerlink" title="jenkins配置"></a>jenkins配置</h5><p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324140147.png" alt="img"></p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324140326.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324135304.png" alt="img"></p>
+<h5 id="jenkins配置"><a href="#jenkins配置" class="headerlink" title="jenkins配置"></a>jenkins配置</h5><p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324140147.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324140326.png" alt="img"></p>
 <p>配置完并保存</p>
-<h4 id="jenkins创建项目"><a href="#jenkins创建项目" class="headerlink" title="jenkins创建项目"></a>jenkins创建项目</h4><p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324140603.png" alt="img"></p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324141633.png" alt="img"></p>
+<h4 id="jenkins创建项目"><a href="#jenkins创建项目" class="headerlink" title="jenkins创建项目"></a>jenkins创建项目</h4><p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324140603.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324141633.png" alt="img"></p>
 <p>构建完成后的shell脚本 达到自动部署的目地</p>
-<p><img src="https://images.sswolf.cn/QQ%E6%88%AA%E5%9B%BE20190324141250.png" alt="img"></p>
+<p><img src="https://img.ssmwolf.com/QQ%E6%88%AA%E5%9B%BE20190324141250.png" alt="img"></p>
 <h4 id="编写shell脚本"><a href="#编写shell脚本" class="headerlink" title="编写shell脚本"></a>编写shell脚本</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#! /bin/bash</span></span><br><span class="line"><span class="comment">#设置UTF-8环境</span></span><br><span class="line"><span class="builtin-name">set</span> <span class="attribute">LANG</span>=en_US.UTF-8</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/java/jdk1.8</span><br><span class="line"><span class="attribute">TOMCAT_HOME</span>=<span class="string">&quot;/usr/local/tomcat/&quot;</span></span><br><span class="line"><span class="attribute">TOMCAT_PORT</span>=8080</span><br><span class="line"><span class="attribute">PROJECT</span>=<span class="string">&quot;trip&quot;</span></span><br><span class="line"><span class="attribute">BAK_DIR</span>=/opt/war/bak/$PROJECT/`date +%Y%m%d`</span><br><span class="line"><span class="attribute">WORK_DIR</span>=/var/lib/jenkins/workspace/trip/target</span><br><span class="line">service tomcat stop</span><br><span class="line">sleep 5</span><br><span class="line">mkdir -p <span class="string">&quot;<span class="variable">$&#123;BAK_DIR&#125;</span>&quot;</span></span><br><span class="line">mv <span class="string">&quot;<span class="variable">$&#123;TOMCAT_HOME&#125;</span>&quot;</span>/webapps/<span class="variable">$&#123;PROJECT&#125;</span>.war <span class="string">&quot;<span class="variable">$&#123;BAK_DIR&#125;</span>&quot;</span>/<span class="string">&quot;<span class="variable">$&#123;PROJECT&#125;</span>&quot;</span>_`date +%Y%m%d%H%M%S`.war</span><br><span class="line">rm -rf <span class="string">&quot;<span class="variable">$&#123;TOMCAT_HOME&#125;</span>&quot;</span>/ROOT</span><br><span class="line">rm -rf <span class="string">&quot;<span class="variable">$&#123;TOMCAT_HOME&#125;</span>&quot;</span>/webapps/trip.war</span><br><span class="line">mv <span class="string">&quot;<span class="variable">$&#123;WORK_DIR&#125;</span>&quot;</span>/trip-develop.war   <span class="string">&quot;<span class="variable">$&#123;TOMCAT_HOME&#125;</span>&quot;</span>/webapps/trip.war</span><br><span class="line">sleep 3</span><br><span class="line">service tomcat start</span><br><span class="line">echo <span class="string">&quot;tomcat 启动成功&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>给shell脚本赋予执行权限</p>
@@ -788,7 +788,7 @@
 
 <h3 id="启用-TLS-Bootstrapping-机制"><a href="#启用-TLS-Bootstrapping-机制" class="headerlink" title="启用 TLS Bootstrapping 机制"></a>启用 TLS Bootstrapping 机制</h3><p>TLS Bootstraping：Master apiserver 启用 TLS 认证后，Node 节点 kubelet 和 kube-proxy 要 与 kube-apiserver 进行通信，必须使用 CA 签发的有效证书才可以，当 Node 节点很多时，这 种客户端证书颁发需要大量工作，同样也会增加集群扩展复杂度。为了简化流程，Kubernetes 引入了 TLS bootstraping 机制来自动颁发客户端证书，kubelet 会以一个低权限用户自动向 apiserver 申请证书，kubelet 的证书由 apiserver 动态签署。所以强烈建议在 Node 上使用这 种方式，目前主要用于 kubelet，kube-proxy 还是由我们统一颁发一个证书。</p>
 <p> TLS bootstraping 工作流程：</p>
-<p><img src="https://images.sswolf.cn/images/image-20210429112608549.png"></p>
+<p><img src="https://img.ssmwolf.com/images/image-20210429112608549.png"></p>
 <p>创建上述配置文件中 token 文件：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat &gt; /opt/kubernetes/cfg/token.csv &lt;&lt; EOF </span><br><span class="line">741b5f19602dedbbcd4b1fb5c5248225,kubelet-bootstrap,10001,system:node-bootstrapper </span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 
@@ -944,5 +944,84 @@
       <tags>
         <tag>Kubernetes</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>部署Kubernetes集群(kubeadm)</title>
+    <url>/2021/05/13/%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4-kubeadm/</url>
+    <content><![CDATA[<h1 id="集群环境规划"><a href="#集群环境规划" class="headerlink" title="集群环境规划"></a>集群环境规划</h1><p><strong>安装要求</strong></p>
+<p>在开始之前，部署 Kubernetes 集群机器需要满足以下几个条件：</p>
+<ul>
+<li>一台或多台机器，操作系统 CentOS7.x-86_x64</li>
+<li>硬件配置：2GB 或更多 RAM，2 个 CPU 或更多 CPU，硬盘 30GB 或更多</li>
+<li>集群中所有机器之间网络互通</li>
+<li>可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点</li>
+<li>禁止 swap 分区</li>
+</ul>
+<h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统</td>
+<td>CentOS Linux release 7.8.2003 (Core)</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>19.03-ce</td>
+</tr>
+<tr>
+<td>Etcd</td>
+<td>3.4.9</td>
+</tr>
+<tr>
+<td>Kubernetes</td>
+<td>1.20</td>
+</tr>
+</tbody></table>
+<h2 id="集群规划"><a href="#集群规划" class="headerlink" title="集群规划"></a>集群规划</h2><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP</th>
+<th>组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mster</td>
+<td>10.150.1.35</td>
+<td>kube-apiserver，kube-controller-manager，kube-scheduler， etcd</td>
+</tr>
+<tr>
+<td>node1</td>
+<td>10.150.1.36</td>
+<td>kubelet，kube-proxy，docker，etcd</td>
+</tr>
+<tr>
+<td>node2</td>
+<td>10.150.1.37</td>
+<td>kubelet，kube-proxy，docker，etcd</td>
+</tr>
+</tbody></table>
+<h1 id="系统初始化"><a href="#系统初始化" class="headerlink" title="系统初始化"></a>系统初始化</h1><p>所有节点均需执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭 selinux</span></span><br><span class="line">sed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config # 永久</span><br><span class="line">setenforce 0 # 临时</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭 swap</span></span><br><span class="line">swapoff -a # 临时</span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab # 永久</span><br><span class="line"><span class="meta">#</span><span class="bash"> 根据规划设置主机名</span></span><br><span class="line">hostnamectl set-hostname &lt;hostname&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在 master 添加 hosts</span></span><br><span class="line">cat &gt;&gt; /etc/hosts &lt;&lt; EOF</span><br><span class="line">10.150.1.35 k8s-master</span><br><span class="line">10.150.1.36 k8s-node1</span><br><span class="line">10.150.1.37 k8s-node2</span><br><span class="line">EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将桥接的 IPv4 流量传递到 iptables 的链</span></span><br><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system # 生效</span><br><span class="line"><span class="meta">#</span><span class="bash"> 时间同步</span></span><br><span class="line">yum install ntpdate -y</span><br><span class="line">ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>所有节点皆需执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> step 1: 安装必要的一些系统工具</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 2: 添加软件源信息</span></span><br><span class="line">yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 3: 更新并安装Docker-CE</span></span><br><span class="line">yum makecache fast</span><br><span class="line">yum -y install docker-ce</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 4: 开启Docker服务</span></span><br><span class="line">systemctl start docker &amp;&amp; systemctl enable docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</span></span><br><span class="line">mkdir -p /etc/docker</span><br><span class="line">systemctl daemon-reload &amp;&amp; sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h1 id="部署Kubernetes集群"><a href="#部署Kubernetes集群" class="headerlink" title="部署Kubernetes集群"></a>部署Kubernetes集群</h1><p>添加阿里源(所有节点皆需执行)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure>
+
+<p>安装指定版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y kubelet-1.20.0-0 kubeadm-1.20.0-0 kubectl-1.20.0-0 --disableexcludes=kubernetes</span><br><span class="line"></span><br><span class="line">systemctl enable kubelet &amp;&amp; systemctl start kubelet</span><br></pre></td></tr></table></figure>
+
+<p>初始化k8s集群</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm init --kubernetes-version=1.20.0  \</span><br><span class="line">--apiserver-advertise-address=10.150.1.35   \</span><br><span class="line">--image-repository registry.aliyuncs.com/google_containers  \</span><br><span class="line">--service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16</span><br></pre></td></tr></table></figure>
+
+]]></content>
   </entry>
 </search>

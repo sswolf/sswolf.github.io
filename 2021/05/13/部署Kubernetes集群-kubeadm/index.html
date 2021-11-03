@@ -23,22 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"ssmwolf.com","root":"/","images":"/images","scheme":"Pisces","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="CDH介绍什么是CDHCDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。 CDH提供以下特性： 灵活性：能够存储各种类型的数据，并使用各种不同的计算框架进行">
+<meta name="description" content="集群环境规划安装要求 在开始之前，部署 Kubernetes 集群机器需要满足以下几个条件：  一台或多台机器，操作系统 CentOS7.x-86_x64 硬件配置：2GB 或更多 RAM，2 个 CPU 或更多 CPU，硬盘 30GB 或更多 集群中所有机器之间网络互通 可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点 禁止 swap 分区  软件环境">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CDH大数据集群之CDH介绍（一）">
-<meta property="og:url" content="https://ssmwolf.com/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:title" content="部署Kubernetes集群(kubeadm)">
+<meta property="og:url" content="https://ssmwolf.com/2021/05/13/%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4-kubeadm/index.html">
 <meta property="og:site_name" content="柒小浪">
-<meta property="og:description" content="CDH介绍什么是CDHCDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。 CDH提供以下特性： 灵活性：能够存储各种类型的数据，并使用各种不同的计算框架进行">
+<meta property="og:description" content="集群环境规划安装要求 在开始之前，部署 Kubernetes 集群机器需要满足以下几个条件：  一台或多台机器，操作系统 CentOS7.x-86_x64 硬件配置：2GB 或更多 RAM，2 个 CPU 或更多 CPU，硬盘 30GB 或更多 集群中所有机器之间网络互通 可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点 禁止 swap 分区  软件环境">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-04-28T09:14:04.000Z">
-<meta property="article:modified_time" content="2021-05-07T10:03:36.664Z">
+<meta property="article:published_time" content="2021-05-13T02:26:15.000Z">
+<meta property="article:modified_time" content="2021-11-03T09:51:32.796Z">
 <meta property="article:author" content="柒小浪">
-<meta property="article:tag" content="Hadoop">
-<meta property="article:tag" content="CDH">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://ssmwolf.com/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/">
+<link rel="canonical" href="https://ssmwolf.com/2021/05/13/%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4-kubeadm/">
 
 
 <script class="page-configurations">
@@ -50,7 +48,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>CDH大数据集群之CDH介绍（一） | 柒小浪</title>
+<title>部署Kubernetes集群(kubeadm) | 柒小浪</title>
   
 
 
@@ -188,7 +186,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CDH%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">CDH介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCDH"><span class="nav-number">1.1.</span> <span class="nav-text">什么是CDH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCM"><span class="nav-number">1.2.</span> <span class="nav-text">什么是CM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">CM架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%83%E8%B7%B3"><span class="nav-number">1.4.</span> <span class="nav-text">心跳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM-%E5%8A%9F%E8%83%BD"><span class="nav-number">1.5.</span> <span class="nav-text">CM 功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">配置管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.2.</span> <span class="nav-text">进程管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.3.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.4.</span> <span class="nav-text">主机管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.5.</span> <span class="nav-text">资源管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.6.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.7.</span> <span class="nav-text">安全管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.5.8.</span> <span class="nav-text">管理服务</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E8%A7%84%E5%88%92"><span class="nav-number">1.</span> <span class="nav-text">集群环境规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">软件环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E8%A7%84%E5%88%92"><span class="nav-number">1.2.</span> <span class="nav-text">集群规划</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">系统初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85docker"><span class="nav-number">3.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4"><span class="nav-number">4.</span> <span class="nav-text">部署Kubernetes集群</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -280,7 +278,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ssmwolf.com/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://ssmwolf.com/2021/05/13/%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4-kubeadm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars.githubusercontent.com/u/15525497?v=4">
@@ -293,7 +291,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CDH大数据集群之CDH介绍（一）
+          部署Kubernetes集群(kubeadm)
         </h1>
 
         <div class="post-meta-container">
@@ -304,24 +302,15 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-04-28 17:14:04" itemprop="dateCreated datePublished" datetime="2021-04-28T17:14:04+08:00">2021-04-28</time>
+      <time title="创建时间：2021-05-13 10:26:15" itemprop="dateCreated datePublished" datetime="2021-05-13T10:26:15+08:00">2021-05-13</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-05-07 18:03:36" itemprop="dateModified" datetime="2021-05-07T18:03:36+08:00">2021-05-07</time>
+        <time title="修改时间：2021-11-03 17:51:32" itemprop="dateModified" datetime="2021-11-03T17:51:32+08:00">2021-11-03</time>
       </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
-        </span>
-    </span>
 
   
     <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -338,14 +327,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.8k</span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -356,68 +345,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="CDH介绍"><a href="#CDH介绍" class="headerlink" title="CDH介绍"></a>CDH介绍</h2><h3 id="什么是CDH"><a href="#什么是CDH" class="headerlink" title="什么是CDH"></a>什么是CDH</h3><p>CDH（Cloudera’s Distribution Including Apache Hadoop）是Hadoop发行版的一种，是一套目前比较完整的、充分测试的Hadoop及其相关项目的发行版。CDH的基础组件均基于apache license开源，无论是个人学习还是企业使用都比较有保障。</p>
-<p>CDH提供以下特性：</p>
-<p><strong>灵活性</strong>：能够存储各种类型的数据，并使用各种不同的计算框架进行操作，包括批处理、交互式sql、文本搜索、机器学习和统计计算。</p>
-<span id="more"></span>
-<p><strong>集成性</strong>：能够快速集成和运行一个完整的Hadoop平台，适用于各种不同的硬件和软件。</p>
-<p><strong>安全性</strong>：处理和控制敏感数据。</p>
-<p><strong>扩展性</strong>：能够部署多种应用，并扩展和扩充它们以满足你的需求。</p>
-<p><strong>高可用性</strong>：可以放心地用于关键的商业任务。</p>
-<p><strong>兼容性</strong>：可以利用你现有的IT基础设施和资源。</p>
-<h3 id="什么是CM"><a href="#什么是CM" class="headerlink" title="什么是CM"></a>什么是CM</h3><p>CM（cloudera Manager）是一种管理CDH集群的端到端的应用。CM通过对CDH集群的各部分提供精细的可视化和控制，建立了企业级部署的标准，增强了操作人员的能力以提升性能、提升服务质量、提高合规性、降低管理成本。</p>
-<p>通过CM，技术人员可以很容易地部署和集中化操作CDH技术栈和其他可托管的服务。它使安装过程自动化，使部署时间从几个星期减少到几分钟；提供了一个集群范围、实时的主机和服务运行情况的视图；提供了一个单一的中央控制台，以对集群配置进行变更；并采用全方位的报告和诊断工具来帮助你优化性能和利用率。</p>
-<h3 id="CM架构"><a href="#CM架构" class="headerlink" title="CM架构"></a>CM架构</h3><p>CM的核心是cloudera Manager Server。Server承载了管理员控制台（Admin Console Web Server）和应用逻辑，并负责安装软件、配置、启动、停止服务，以及管理运行有服务的集群。</p>
-<p>Cloudera Manager Server与以下几个组件一同工作：</p>
-<p><strong>代理</strong>：在每个主机上安装，负责启动和停止进行、解包配置、触发安装、监控主机。</p>
-<p><strong>管理服务</strong>：由一组角色组成的服务，执行各种监视、告警、报告功能。</p>
-<p><strong>数据库</strong>：存储配置和监控信息。通常，多个逻辑数据库在一个或多个数据库服务器上运行。例如CMS和监控服务使用不同的逻辑数据库。</p>
-<p><strong>Cloudera仓库</strong>：CM提供的用于软件分发的仓库。</p>
-<p><strong>客户端</strong>：与服务器交互的借口，包括</p>
-<p>管理控制台，管理员使用该基于web的界面以管理集群和CM。</p>
-<p>API，开发者可使用API创建自定义的CM应用。</p>
-<h3 id="心跳"><a href="#心跳" class="headerlink" title="心跳"></a>心跳</h3><p>心跳是CM的主要通信机制。默认情况下，代理每15秒发送心跳给CMS。然而为了减少用户等待时间，当状态发生变化时，频率会增加。</p>
-<p>心跳的交换过程中，代理通知CMS其自身的活性。反过来，CMS使用该消息对应执行的操作进行响应。代理和CMS两者最终会达成一致，例如当 启动一个服务时，代理会尝试启动相关的进程;如果一个进程启动失败， CMS会将启动命令标记为失败。</p>
-<h3 id="CM-功能"><a href="#CM-功能" class="headerlink" title="CM 功能"></a>CM 功能</h3><p>状态管理：</p>
-<p>CMS维护了集群的各种状态。状态可分为两类：模块和运行时，两者都存储于CMS的数据库中。</p>
-<p>模块中包含集群、主机、服务、角色、配置。运行时包含进程、命令。</p>
-<h4 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h4><p>CM在多个层面定义了配置，如：</p>
+        <h1 id="集群环境规划"><a href="#集群环境规划" class="headerlink" title="集群环境规划"></a>集群环境规划</h1><p><strong>安装要求</strong></p>
+<p>在开始之前，部署 Kubernetes 集群机器需要满足以下几个条件：</p>
 <ul>
-<li>服务层面，可定义整个服务实例层面的配置，如HDFS服务的默认副本因子。</li>
-<li>角色组层面，可定义某个角色组的配置，如DataNode的处理线程数量，可根据DataNodes的不同分组进行不同的配置。</li>
-<li>角色层面，可覆盖从角色组层面继承的配置。这种配置需要谨慎使用，因为会造成角色组中的配置分歧。如因为排错需求临时启用某个角色实例的DEBUG日志。</li>
-<li>主机层面，根据监控、软件管理、资源管理的不同有不同的配置。</li>
-<li>CM自身也有很多与管理操作相关的配置</li>
+<li>一台或多台机器，操作系统 CentOS7.x-86_x64</li>
+<li>硬件配置：2GB 或更多 RAM，2 个 CPU 或更多 CPU，硬盘 30GB 或更多</li>
+<li>集群中所有机器之间网络互通</li>
+<li>可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点</li>
+<li>禁止 swap 分区</li>
 </ul>
-<h4 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h4><ul>
-<li>非CM管理的集群使用脚本进行角色进程的启动，但在CM管理的集群中这类脚本不起作用。</li>
-<li>CM管理的集群中，只能使用CM进行角色进程的启停。CM使用开源的进程管理工具名为supervisord，其会启动进程、重定向日志、通知进程失 败、为进程设置正确的用户ID等等。CM支持自动重启一个崩溃的进程。 如果一个进程在启动后频繁崩溃，还会被打上非健康标记。</li>
-<li>停止CMS和CM代理不会使正在运行的进程被中止。</li>
-</ul>
-<h4 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h4><ul>
-<li>CM支持两种软件分发格式:packages和parcels。</li>
-<li>package是一种二进制分发格式，包含编译的代码和元数据如包 述、版本、依赖项。包管理系统评估此元数据以允许包搜索、执行升级、确保包的所有依赖关系得到满足。CM使用本地操作系统支持的包管理程序。</li>
-<li>parcel也是一种二进制分发格式，包含CM需要使用的附加元数据。其与package的区别有:可安装同一个parcel的多个版本，并激活其中一个; parcel可安装到任何路径;通过parcel安装，CM会自动下载并激活和每 个节点操作系统版本匹配的parcel包，解决某些操作系统版本不一致问 题。</li>
-</ul>
-<h4 id="主机管理"><a href="#主机管理" class="headerlink" title="主机管理"></a>主机管理</h4><ul>
-<li>CM 供了多种功能以管理Hadoop集群的主机。第一次运行CM管理员控制台时，可搜索主机并添加到集群，一旦选中了主机就可以为其分配CDH 角色。CM会在主机上自动部署作为集群托管节点的所有软件:JDK，CM 代理，CDH，Impala，Solr等等。</li>
-<li>服务部署并运行后，管理员控制台中的“Hosts”区域显示集群中托管 主机的总体状态。 供的信息包括主机上的CDH版本、主机所属的集群、 运行在主机上的角色的数量。Cloudera管理服务中的主机监控角色执行 健康检查并收集主机的统计信息，以允许你监控主机的健康和性能。</li>
-</ul>
-<h4 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h4><p>CM允许使用两种资源管理方式:</p>
-<ul>
-<li>静态资源池:使用Linux cgroups在多个服务间静态地进行资源隔离，如 HBase、Impala、YARN分别使用一定百分比的资源。静态资源池默认不启 用。</li>
-<li>动态资源池:用于某些服务内部的资源管理，如YARN的各种资源调度器; Impala也可对不同池中的查询动态分配资源。</li>
-</ul>
-<h4 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h4><ul>
-<li>访问CM通过用户账户进行控制。用户账户标识如何对用户进行身份验证，并确定授予用户的权限。</li>
-<li>CM 供了多种用户认证机制。可以配置CM使用CM数据库认证用户，或使用某种外部认证服务。外部认证服务可以是LDAP服务器，或者指定的其 他服务。CM还支持使用安全断言标记语言(SAML)来实现单点登录。</li>
-</ul>
-<h4 id="安全管理"><a href="#安全管理" class="headerlink" title="安全管理"></a>安全管理</h4><ul>
-<li>认证:认证是指用户或服务证明其有访问某种系统资源的权限。Cloudera集群支持操作系统账号认证、LDAP、Kerberos等认证方式。LDAP和Kerberos并不是互斥的，很多时候可以一起使用。</li>
-<li>授权:授权关注谁可以存取或控制指定的资源或服务。CDH目前支持以 下几种权限控制:传统的POSIX形式的目录和文件权限控制;HDFS扩展 的ACL细粒度权限控制;HBase可对用户和组设置各种操作的ACL;使用Apache Sentry进行基于角色的权限控制。</li>
-<li>加密:集群不同层面存储和传输的数据支持不同的加密方式。</li>
-</ul>
-<h4 id="管理服务"><a href="#管理服务" class="headerlink" title="管理服务"></a>管理服务</h4><p>Cloudera Management Service实现了多种管理特性，包括活动监控、主机监控、服务监控、事件服务、告警发布、报表管理等。</p>
+<h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统</td>
+<td>CentOS Linux release 7.8.2003 (Core)</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>19.03-ce</td>
+</tr>
+<tr>
+<td>Etcd</td>
+<td>3.4.9</td>
+</tr>
+<tr>
+<td>Kubernetes</td>
+<td>1.20</td>
+</tr>
+</tbody></table>
+<h2 id="集群规划"><a href="#集群规划" class="headerlink" title="集群规划"></a>集群规划</h2><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP</th>
+<th>组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mster</td>
+<td>10.150.1.35</td>
+<td>kube-apiserver，kube-controller-manager，kube-scheduler， etcd</td>
+</tr>
+<tr>
+<td>node1</td>
+<td>10.150.1.36</td>
+<td>kubelet，kube-proxy，docker，etcd</td>
+</tr>
+<tr>
+<td>node2</td>
+<td>10.150.1.37</td>
+<td>kubelet，kube-proxy，docker，etcd</td>
+</tr>
+</tbody></table>
+<h1 id="系统初始化"><a href="#系统初始化" class="headerlink" title="系统初始化"></a>系统初始化</h1><p>所有节点均需执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭 selinux</span></span><br><span class="line">sed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config # 永久</span><br><span class="line">setenforce 0 # 临时</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关闭 swap</span></span><br><span class="line">swapoff -a # 临时</span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab # 永久</span><br><span class="line"><span class="meta">#</span><span class="bash"> 根据规划设置主机名</span></span><br><span class="line">hostnamectl set-hostname &lt;hostname&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在 master 添加 hosts</span></span><br><span class="line">cat &gt;&gt; /etc/hosts &lt;&lt; EOF</span><br><span class="line">10.150.1.35 k8s-master</span><br><span class="line">10.150.1.36 k8s-node1</span><br><span class="line">10.150.1.37 k8s-node2</span><br><span class="line">EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将桥接的 IPv4 流量传递到 iptables 的链</span></span><br><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system # 生效</span><br><span class="line"><span class="meta">#</span><span class="bash"> 时间同步</span></span><br><span class="line">yum install ntpdate -y</span><br><span class="line">ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>所有节点皆需执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> step 1: 安装必要的一些系统工具</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 2: 添加软件源信息</span></span><br><span class="line">yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 3: 更新并安装Docker-CE</span></span><br><span class="line">yum makecache fast</span><br><span class="line">yum -y install docker-ce</span><br><span class="line"><span class="meta">#</span><span class="bash"> Step 4: 开启Docker服务</span></span><br><span class="line">systemctl start docker &amp;&amp; systemctl enable docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</span></span><br><span class="line">mkdir -p /etc/docker</span><br><span class="line">systemctl daemon-reload &amp;&amp; sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h1 id="部署Kubernetes集群"><a href="#部署Kubernetes集群" class="headerlink" title="部署Kubernetes集群"></a>部署Kubernetes集群</h1><p>添加阿里源(所有节点皆需执行)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">yum makecache fast</span><br></pre></td></tr></table></figure>
+
+<p>安装指定版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y kubelet-1.20.0-0 kubeadm-1.20.0-0 kubectl-1.20.0-0 --disableexcludes=kubernetes</span><br><span class="line"></span><br><span class="line">systemctl enable kubelet &amp;&amp; systemctl start kubelet</span><br></pre></td></tr></table></figure>
+
+<p>初始化k8s集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --kubernetes-version=1.20.0  \</span><br><span class="line">--apiserver-advertise-address=10.150.1.35   \</span><br><span class="line">--image-repository registry.aliyuncs.com/google_containers  \</span><br><span class="line">--service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -453,7 +454,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://ssmwolf.com/2021/04/28/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%80%EF%BC%89/" title="CDH大数据集群之CDH介绍（一）">https://ssmwolf.com/2021/04/28/CDH大数据集群之CDH介绍（一）/</a>
+      <a href="https://ssmwolf.com/2021/05/13/%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4-kubeadm/" title="部署Kubernetes集群(kubeadm)">https://ssmwolf.com/2021/05/13/部署Kubernetes集群-kubeadm/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -461,23 +462,16 @@
 </ul>
 </div>
 
-          <div class="post-tags">
-              <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
-              <a href="/tags/CDH/" rel="tag"># CDH</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/04/28/%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2Kubernetes%E9%9B%86%E7%BE%A4/" rel="prev" title="二进制部署Kubernetes集群">
-                  <i class="fa fa-chevron-left"></i> 二进制部署Kubernetes集群
+                <a href="/2021/05/07/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E9%83%A8%E7%BD%B2%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="CDH大数据集群之CDH部署（二）">
+                  <i class="fa fa-chevron-left"></i> CDH大数据集群之CDH部署（二）
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/05/07/CDH%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E4%B9%8BCDH%E9%83%A8%E7%BD%B2%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="CDH大数据集群之CDH部署（二）">
-                  CDH大数据集群之CDH部署（二） <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
