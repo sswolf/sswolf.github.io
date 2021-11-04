@@ -1023,5 +1023,11 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm init --kubernetes-version=1.20.0  \</span><br><span class="line">--apiserver-advertise-address=10.150.1.35   \</span><br><span class="line">--image-repository registry.aliyuncs.com/google_containers  \</span><br><span class="line">--service-cidr=10.10.0.0/16 --pod-network-cidr=10.122.0.0/16</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+      </tags>
   </entry>
 </search>
