@@ -1003,12 +1003,12 @@
 <tr>
 <td>node1</td>
 <td>10.150.1.36</td>
-<td>kubelet，kube-proxy，docker，etcd</td>
+<td>kubelet，kube-proxy，docker</td>
 </tr>
 <tr>
 <td>node2</td>
 <td>10.150.1.37</td>
-<td>kubelet，kube-proxy，docker，etcd</td>
+<td>kubelet，kube-proxy，docker</td>
 </tr>
 </tbody></table>
 <h1 id="系统初始化"><a href="#系统初始化" class="headerlink" title="系统初始化"></a>系统初始化</h1><p>所有节点均需执行</p>
